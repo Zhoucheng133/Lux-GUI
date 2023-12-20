@@ -5,7 +5,6 @@ module.exports = defineConfig({
   pluginOptions: {
     electronBuilder: {
       nodeIntegration: true,
-      // 对于macOS，分别导出x64版本和Apple Silicon版本
       builderOptions: {
         artifactName: '${productName}-${version}-${os}-${arch}.${ext}',
         mac: {
