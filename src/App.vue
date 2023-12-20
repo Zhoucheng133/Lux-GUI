@@ -14,15 +14,20 @@
       </div>
     </div>
     <div class="content">
+      <listView />
     </div>
   </div>
 </template>
 
 <script>
 import { ipcRenderer } from 'electron';
+import listView from './components/listView.vue';
 export default {
   beforeDestroy(){
     ipcRenderer.removeAllListeners('sysFeedback');
+  },
+  components: {
+    listView
   },
   data() {
     return {
