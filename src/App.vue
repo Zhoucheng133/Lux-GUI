@@ -2,7 +2,6 @@
   <div id="app">
     <div class="titleBar"></div>
     <div class="content">
-      hello!
     </div>
   </div>
 </template>
@@ -26,10 +25,17 @@ export default {
 
 body{
   margin: 0;
+  background-color: rgb(240, 240, 240);
 }
 
 .content{
-  margin-top: 30px
+  /* margin-top: 30px; */
+  margin-top: 30px;
+  background-color: white;
+  margin-left: 200px;
+  height: calc(100vh - 40px);
+  margin-right: 10px;
+  border-radius: 10px;
 }
 
 #app {
