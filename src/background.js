@@ -11,8 +11,9 @@ var win;
 
 async function createWindow() {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1100,
+    height: 770,
+    titleBarStyle: 'hiddenInset',
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
