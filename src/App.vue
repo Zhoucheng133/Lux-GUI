@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <div class="titleBar"></div>
+    <div class="content">
+      hello!
+    </div>
   </div>
 </template>
 
@@ -11,7 +14,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .titleBar{
   position: fixed;
   top: 0;
@@ -19,6 +22,14 @@ export default {
   height: 30px;
   width: 100%;
   -webkit-app-region: drag;
+}
+
+body{
+  margin: 0;
+}
+
+.content{
+  margin-top: 30px
 }
 
 #app {
