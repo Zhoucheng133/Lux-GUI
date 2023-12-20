@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -56,3 +56,17 @@ if (isDevelopment) {
     })
   }
 }
+
+ipcMain.on("getSys", async (event) => {
+  if (process.platform == 'darwin') {
+    // macOS系统
+    // event.reply('sysFeedback', 'macOS');
+    event.reply('sysFeedback', 'Windows');
+  } else if (process.platform == 'win32') {
+    // Windows系统
+    event.reply('sysFeedback', 'Windows');
+  } else {
+    // Linux系统
+    event.reply('sysFeedback', 'Linux');
+  }
+});

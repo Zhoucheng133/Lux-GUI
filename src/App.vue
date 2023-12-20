@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="titleBar">
-      <div class="windowOp">
+      <div class="windowOp" v-if="showWindowOp">
         <div class="minButton">
           <svg width="13" height="13" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 24L38.5 24" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
@@ -19,9 +19,31 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron';
 export default {
-  name: 'App',
-  
+  beforeDestroy(){
+    ipcRenderer.removeAllListeners('sysFeedback');
+  },
+  data() {
+    return {
+      isMax: false,
+      showWindowOp: false,
+    }
+  },
+  methods: {
+    sysFeedback(event, sys){
+      if(sys=="macOS"){
+        this.showWindowOp=false;
+      }else{
+        this.showWindowOp=true;
+      }
+    }
+  },
+  created() {
+    ipcRenderer.removeAllListeners('sysFeedback');
+    ipcRenderer.on('sysFeedback', this.sysFeedback);
+    ipcRenderer.send('getSys');
+  },
 }
 </script>
 
