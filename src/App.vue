@@ -53,6 +53,13 @@ export default {
 </script>
 
 <style>
+body{
+  margin: 0;
+  background-color: rgb(240, 240, 240) !important;
+}
+</style>
+
+<style scoped>
 .closeButton:hover{
   background-color: rgb(200, 0, 0);
   /* cursor: pointer; */
@@ -84,7 +91,7 @@ export default {
   align-items: center;
 }
 .titleBar{
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   left: 0;
   height: 30px;
@@ -92,14 +99,9 @@ export default {
   -webkit-app-region: drag;
 }
 
-body{
-  margin: 0;
-  background-color: rgb(240, 240, 240);
-}
-
 .content{
   /* margin-top: 30px; */
-  margin-top: 30px;
+  /* transform: translateY(-30px); */
   background-color: white;
   margin-left: 200px;
   height: calc(100vh - 40px);
