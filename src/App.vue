@@ -1,6 +1,18 @@
 <template>
   <div id="app">
-    <div class="titleBar"></div>
+    <div class="titleBar">
+      <div class="windowOp">
+        <div class="minButton">
+          <svg width="13" height="13" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 24L38.5 24" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="resizeButton">
+          <svg width="13" height="13" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 42H6V26" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 6H42V22" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="closeButton">
+          <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
     <div class="content">
     </div>
   </div>
@@ -14,6 +26,36 @@ export default {
 </script>
 
 <style>
+.closeButton:hover{
+  background-color: rgb(200, 0, 0);
+  /* cursor: pointer; */
+}
+.closeButton{
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all linear .2s;
+  background-color: red;
+}
+.minButton:hover, .resizeButton:hover{
+  background-color: lightgrey;
+  /* cursor: pointer; */
+}
+.minButton, .resizeButton{
+  height: 30px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all linear .2s;
+}
+.windowOp{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 .titleBar{
   position: fixed;
   top: 0;
