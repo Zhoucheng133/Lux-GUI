@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app">
     设置
   </div>
 </template>
@@ -16,3 +16,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.app{
+  user-select: none;
+}
+</style>
