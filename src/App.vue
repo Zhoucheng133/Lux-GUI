@@ -20,7 +20,9 @@
       @setNowPage="setNowPage" 
       :nowPage="nowPage" />
     <div class="content">
-      <listView />
+      <downloadListView v-if="nowPage=='downloadList'" />
+      <completeListView v-else-if="nowPage=='completeList'"/>
+      <settingsView v-else />
     </div>
   </div>
 </template>
@@ -29,13 +31,17 @@
 import { ipcRenderer } from 'electron';
 
 import sideBar from './components/_sideBar.vue';
-import listView from './components/listView.vue';
+import downloadListView from './components/downloadListView.vue';
+import completeListView from './components/completeListView.vue';
+import settingsView from './components/settingsView.vue';
 export default {
   beforeDestroy(){
     ipcRenderer.removeAllListeners('sysFeedback');
   },
   components: {
-    listView,
+    downloadListView,
+    completeListView,
+    settingsView,
     sideBar
   },
   data() {
