@@ -13,6 +13,7 @@
         </div>
       </div>
     </div>
+    <sideBar class="sideBar" />
     <div class="content">
       <listView />
     </div>
@@ -21,13 +22,16 @@
 
 <script>
 import { ipcRenderer } from 'electron';
+
+import sideBar from './components/_sideBar.vue';
 import listView from './components/listView.vue';
 export default {
   beforeDestroy(){
     ipcRenderer.removeAllListeners('sysFeedback');
   },
   components: {
-    listView
+    listView,
+    sideBar
   },
   data() {
     return {
@@ -53,9 +57,14 @@ export default {
 </script>
 
 <style>
+.sideBar{
+  position: fixed;
+  width: 180px;
+}
 body{
   margin: 0;
   background-color: rgb(240, 240, 240) !important;
+  height: 100vh;
 }
 </style>
 
@@ -103,7 +112,7 @@ body{
   /* margin-top: 30px; */
   /* transform: translateY(-30px); */
   background-color: white;
-  margin-left: 200px;
+  margin-left: 180px;
   height: calc(100vh - 40px);
   margin-right: 10px;
   border-radius: 10px;
