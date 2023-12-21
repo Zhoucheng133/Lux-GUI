@@ -59,7 +59,7 @@ export default {
 <style>
 .sideBar{
   position: fixed;
-  width: 180px;
+  width: 160px;
 }
 body{
   margin: 0;
@@ -112,7 +112,7 @@ body{
   /* margin-top: 30px; */
   /* transform: translateY(-30px); */
   background-color: white;
-  margin-left: 180px;
+  margin-left: 160px;
   height: calc(100vh - 40px);
   margin-right: 10px;
   border-radius: 10px;
