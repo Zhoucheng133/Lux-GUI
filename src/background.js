@@ -12,8 +12,8 @@ let win;
 
 async function createWindow() {
   win = new BrowserWindow({
-    width: 1100,
-    height: 770,
+    width: 1000,
+    height: 700,
     frame: false,
     titleBarStyle: 'hiddenInset',
     webPreferences: {
@@ -21,7 +21,7 @@ async function createWindow() {
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-  win.setMinimumSize(1100, 770);
+  win.setMinimumSize(1000, 700);
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) win.webContents.openDevTools()
