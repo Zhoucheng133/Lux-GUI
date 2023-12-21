@@ -1,6 +1,5 @@
 <template>
   <div class="body">
-    <div class="selectedLine" ref="selectedLineRef"></div>
     <div :class="nowPage=='downloadList' ? 'item_selected' : 'item'" @click="setNowPage('downloadList')" ref="downloadListRef">
       <svg class="menuIcon" width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 24.0083V42H42V24" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 23L24 32L15 23" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M23.9917 6V32" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       下载列表
@@ -30,25 +29,6 @@ export default {
       }
     }
   },
-  methods: {
-    pageChange(val){
-      if(val=='downloadList'){
-        // console.log(this.$refs.downloadListRef.getBoundingClientRect().top);
-        this.$refs.selectedLineRef.style.transform="translate(10px, "+(this.$refs.downloadListRef.getBoundingClientRect().top+15)+"px)";
-      }else if(val=='completeList'){
-        // console.log(this.$refs.completeListRef.getBoundingClientRect().top);
-        this.$refs.selectedLineRef.style.transform="translate(10px, "+(this.$refs.completeListRef.getBoundingClientRect().top+15)+"px)";
-      }else{
-        // console.log(this.$refs.settingsRef.getBoundingClientRect().top);
-        this.$refs.selectedLineRef.style.transform="translate(10px, "+(this.$refs.settingsRef.getBoundingClientRect().top+15)+"px)";
-      }
-    }
-  },
-  watch: {
-    nowPage: function(newVal){
-      this.pageChange(newVal);
-    }
-  },
 }
 </script>
 
@@ -64,17 +44,6 @@ export default {
   margin-right: 10px; 
   margin-left: 15px;
 }
-.selectedLine{
-  position: fixed;
-  height: 20px;
-  width: 4px;
-  background-color: rgb(0, 166, 255);
-  border-radius: 2px;
-  top: 0px;
-  left: 0px;
-  transform: translate(10px, 75px);
-  transition: transform ease-in-out .3s;
-}
 .body{
   padding-top: 30px;
   user-select: none;
@@ -89,9 +58,10 @@ export default {
   height: 50px;
   border-radius: 10px;
   transition: background-color linear .2s;
+  background-color: rgb(220, 220, 220);
 }
 .item:hover{
-  background-color: rgb(220, 220, 220);
+  background-color: rgb(230, 230, 230);
   cursor: pointer;
 }
 .item{
