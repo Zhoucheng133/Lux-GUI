@@ -62,7 +62,6 @@ ipcMain.on("getSys", async (event) => {
   if (process.platform == 'darwin') {
     // macOS系统
     event.reply('sysFeedback', 'macOS');
-    event.reply('sysFeedback', 'Windows');
   } else if (process.platform == 'win32') {
     // Windows系统
     event.reply('sysFeedback', 'Windows');
