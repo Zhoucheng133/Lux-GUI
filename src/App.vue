@@ -16,7 +16,9 @@
         </div>
       </div>
     </div>
-    <sideBar class="sideBar" />
+    <sideBar class="sideBar" 
+      @setNowPage="setNowPage" 
+      :nowPage="nowPage" />
     <div class="content">
       <listView />
     </div>
@@ -40,9 +42,14 @@ export default {
     return {
       isMax: false,
       showWindowOp: false,
+
+      nowPage: "downloadList"
     }
   },
   methods: {
+    setNowPage(val){
+      this.nowPage=val;
+    },
     winClose(){
       ipcRenderer.send('winClose');
     },
