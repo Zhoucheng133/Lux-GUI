@@ -2,14 +2,17 @@
   <div id="app">
     <div class="titleBar">
       <div class="windowOp" v-if="showWindowOp">
-        <div class="minButton">
+        <div class="minButton" @click="winMin">
           <svg width="13" height="13" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5 24L38.5 24" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div class="resizeButton">
+        <div class="resizeButton" v-if="!isMax" @click="winMax">
           <svg width="13" height="13" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 42H6V26" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M26 6H42V22" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div class="closeButton">
-          <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="resizeButton" v-else @click="winRestore">
+          <svg width="13" height="13" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M44 20H28V4" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 28H20V44" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="closeButton" @click="winClose">
+          <svg width="13" height="13" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
     </div>
@@ -40,6 +43,20 @@ export default {
     }
   },
   methods: {
+    winClose(){
+      ipcRenderer.send('winClose');
+    },
+    winRestore(){
+      ipcRenderer.send('winRestore');
+      this.isMax=false;
+    },
+    winMax(){
+      ipcRenderer.send('winMax');
+      this.isMax=true;
+    },
+    winMin(){
+      ipcRenderer.send('winMin');
+    },
     sysFeedback(event, sys){
       if(sys=="macOS"){
         this.showWindowOp=false;

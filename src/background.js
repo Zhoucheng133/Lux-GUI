@@ -57,10 +57,12 @@ if (isDevelopment) {
   }
 }
 
+// 获取系统信息
 ipcMain.on("getSys", async (event) => {
   if (process.platform == 'darwin') {
     // macOS系统
     event.reply('sysFeedback', 'macOS');
+    event.reply('sysFeedback', 'Windows');
   } else if (process.platform == 'win32') {
     // Windows系统
     event.reply('sysFeedback', 'Windows');
@@ -69,3 +71,23 @@ ipcMain.on("getSys", async (event) => {
     event.reply('sysFeedback', 'Linux');
   }
 });
+
+// 关闭窗口
+ipcMain.on("winClose", async (event) => {
+  app.quit();
+})
+
+// 最小化窗口
+ipcMain.on("winMin", async (event) => {
+  win.minimize();
+})
+
+// 最大化窗口
+ipcMain.on("winMax", async (event) => {
+  win.maximize();
+})
+
+// 还原窗口
+ipcMain.on("winRestore", async (event) => {
+  win.restore();
+})
