@@ -24,8 +24,8 @@
         <el-checkbox v-model="m3u8Enable">使用m3u8下载</el-checkbox>
       </div>
       <div class="addViewFoot" slot="footer">
-        <div class="cancelButton">取消</div>
-        <div class="downloadButton">下载</div>
+        <div class="cancelButton" @click="cancelDownload">取消</div>
+        <div class="downloadButton" @click="downloadHandler">下载</div>
       </div>
     </el-dialog>
   </div>
@@ -35,7 +35,7 @@
 export default {
   data() {
     return {
-      showAdd: true,
+      showAdd: false,
       addLink: "",
       m3u8Enable: false,
     }
@@ -43,6 +43,19 @@ export default {
   methods: {
     newDownloadClick(){
       this.showAdd=true;
+    },
+    cancelDownload(){
+      this.showAdd=false;
+      this.addLink="";
+    },
+    downloadHandler(){
+      if(this.addLink==""){
+        this.$message.error("没有输入下载链接")
+      }else{
+        // TODO 添加到下载队列
+        this.showAdd=false;
+        this.addLink="";
+      }
     }
   },
 }
