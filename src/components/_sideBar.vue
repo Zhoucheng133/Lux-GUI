@@ -55,7 +55,7 @@ export default {
   display: flex;
   align-items: center;
   width: 140px;
-  height: 50px;
+  height: 45px;
   border-radius: 10px;
   transition: background-color linear .2s;
   background-color: rgb(220, 220, 220);
@@ -67,7 +67,7 @@ export default {
 .item{
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 45px;
   border-radius: 10px;
   transition: background-color linear .2s;
   width: 140px;
