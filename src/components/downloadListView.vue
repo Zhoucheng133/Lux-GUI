@@ -68,7 +68,7 @@ export default {
     },
     newDownloadClick(){
       if(this.luxPath==""){
-        this.$message.error("没有设置Lux程序路径")
+        this.$message.error({message: "没有设置Lux程序路径", offset: 50, duration: 2000})
       }else{
         this.downloadPath=this.savePath
         this.showAdd=true;
@@ -83,7 +83,7 @@ export default {
     },
     downloadHandler(){
       if(this.addLink==""){
-        this.$message.error("没有输入下载链接")
+        this.$message.error({message: "没有输入下载链接", offset: 50, duration: 2000});
       }else{
         // TODO 添加到下载队列
         this.showAdd=false;
