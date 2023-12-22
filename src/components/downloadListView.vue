@@ -16,10 +16,17 @@
         type="textarea"
         :rows="5" 
         resize="none"
-        placeholder="请输入内容"
+        placeholder="输入下载链接"
         class="linkInput"
         v-model="addLink">
       </el-input>
+      <div class="checkBox">
+        <el-checkbox v-model="m3u8Enable">使用m3u8下载</el-checkbox>
+      </div>
+      <div class="addViewFoot" slot="footer">
+        <div class="cancelButton">取消</div>
+        <div class="downloadButton">下载</div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -29,7 +36,8 @@ export default {
   data() {
     return {
       showAdd: true,
-      addLink: ""
+      addLink: "",
+      m3u8Enable: false,
     }
   },
   methods: {
@@ -42,11 +50,47 @@ export default {
 
 <style>
 .el-dialog__body{
-  padding-top: 10px;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
 }
 </style>
 
 <style scoped>
+.cancelButton{
+  margin-right: 10px;
+  border: 1px solid white;
+}
+.downloadButton:hover{
+  background-color: grey;
+}
+.cancelButton:hover{
+  border: 1px solid grey;
+}
+.cancelButton:hover, .downloadButton:hover{
+  cursor: pointer;
+}
+.downloadButton{
+  background-color: rgb(160, 160, 160);
+  color: white;
+}
+.cancelButton, .downloadButton{
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+  transition: all .2s linear;
+}
+.addViewFoot{
+  display: flex;
+  justify-content: flex-end;
+  font-size: 14px;
+}
+.checkBox{
+  margin-top: 10px;
+  display: flex;
+  padding-left: 5px;
+}
 .addViewTitle{
   text-align: left;
   font-size: 15px;
