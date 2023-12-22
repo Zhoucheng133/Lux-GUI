@@ -47,7 +47,7 @@ export default {
   methods: {
     newDownloadClick(){
       if(this.luxPath==""){
-        this.$message.error("没有设置Lux程序位置")
+        this.$message.error("没有设置Lux程序路径")
       }else{
         this.showAdd=true;
       }
