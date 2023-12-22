@@ -36,6 +36,8 @@ export default {
       showAdd: false,
       addLink: "",
       m3u8Enable: false,
+
+      downloadList: [],
     }
   },
   methods: {
@@ -53,6 +55,7 @@ export default {
         // TODO 添加到下载队列
         this.showAdd=false;
         this.addLink="";
+        this.m3u8Enable=false;
       }
     }
   },
