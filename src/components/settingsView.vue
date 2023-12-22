@@ -8,7 +8,7 @@
       <div class="item">
         <div class="itemText">Lux程序路径</div>
         <div class="itemIndex">
-          <el-input v-model="luxPath" :readonly=true>
+          <el-input v-model="luxPathInput" :readonly=true>
             <el-button @click="pickLuxPath" type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
           </el-input>
         </div>
@@ -16,7 +16,7 @@
       <div class="item">
         <div class="itemText">默认下载路径</div>
         <div class="itemIndex">
-          <el-input v-model="savePath" :readonly=true>
+          <el-input v-model="savePathInput" :readonly=true>
             <el-button @click="pickSavePath" type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
           </el-input>
         </div>
@@ -36,12 +36,19 @@ export default {
   },
   methods: {
     submitSettings(){
-      this.$emit("changeSettings", this.luxPathInput, this.savePathInput)
+      // console.log(this.luxPathInput, this.savePathInput);
+      localStorage.setItem("luxPath", this.luxPathInput);
+      localStorage.setItem("savePath", this.savePathInput);
+      this.$emit("changeSettings", this.luxPathInput, this.savePathInput);
     },
     getLuxPath(event, arg){
       this.luxPathInput=arg;
     },
     getSavePath(event, arg){
+      if(arg==undefined){
+        this.savePathInput="";
+        return;
+      }
       this.savePathInput=arg;
     },
 
@@ -57,12 +64,20 @@ export default {
     ipcRenderer.removeAllListeners('getLuxPath');
     ipcRenderer.on('getSavePath', this.getSavePath);
     ipcRenderer.on('getLuxPath', this.getLuxPath);
+
+    if(localStorage.getItem("luxPath")!=null && localStorage.getItem("luxPath")!=""){
+      this.luxPathInput=localStorage.getItem("luxPath");
+    }
+    if(localStorage.getItem("savePath")!=null && localStorage.getItem("savePath")!=""){
+      this.savePathInput=localStorage.getItem("savePath");
+    }
+    this.submitSettings();
   },
   watch: {
-    luxPath: function(){
+    luxPathInput: function(){
       this.submitSettings();
     },
-    savePath: function(){
+    savePathInput: function(){
       this.submitSettings();
     }
   },
