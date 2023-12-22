@@ -20,9 +20,9 @@
       @setNowPage="setNowPage" 
       :nowPage="nowPage" />
     <div class="content">
-      <downloadListView v-if="nowPage=='downloadList'" />
-      <completeListView v-else-if="nowPage=='completeList'"/>
-      <settingsView v-else />
+      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" />
+      <completeListView v-show="nowPage=='completeList'"/>
+      <settingsView v-show="nowPage=='settings'" :savePath="savePath" :luxPath="luxPath" @changeSettings="changeSettings" />
     </div>
   </div>
 </template>
@@ -49,10 +49,17 @@ export default {
       isMax: false,
       showWindowOp: false,
 
-      nowPage: "settings"
+      nowPage: "settings",
+
+      savePath: "",
+      luxPath: "",
     }
   },
   methods: {
+    changeSettings(luxPath, savePath){
+      this.luxPath=luxPath;
+      this.savePath=savePath;
+    },
     setNowPage(val){
       this.nowPage=val;
     },

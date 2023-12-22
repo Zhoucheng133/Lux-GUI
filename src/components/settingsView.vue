@@ -30,16 +30,19 @@ import { ipcRenderer } from 'electron';
 export default {
   data() {
     return {
-      luxPath: "",
-      savePath: "",
+      luxPathInput: "",
+      savePathInput: "",
     }
   },
   methods: {
+    submitSettings(){
+      this.$emit("changeSettings", this.luxPathInput, this.savePathInput)
+    },
     getLuxPath(event, arg){
-      this.luxPath=arg;
+      this.luxPathInput=arg;
     },
     getSavePath(event, arg){
-      this.savePath=arg;
+      this.savePathInput=arg;
     },
 
     pickSavePath(){
@@ -54,6 +57,14 @@ export default {
     ipcRenderer.removeAllListeners('getLuxPath');
     ipcRenderer.on('getSavePath', this.getSavePath);
     ipcRenderer.on('getLuxPath', this.getLuxPath);
+  },
+  watch: {
+    luxPath: function(){
+      this.submitSettings();
+    },
+    savePath: function(){
+      this.submitSettings();
+    }
   },
 }
 </script>

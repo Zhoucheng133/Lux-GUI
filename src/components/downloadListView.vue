@@ -31,6 +31,10 @@
 
 <script>
 export default {
+  props: {
+    savePath: String,
+    luxPath: String,
+  },
   data() {
     return {
       showAdd: false,
@@ -42,7 +46,12 @@ export default {
   },
   methods: {
     newDownloadClick(){
-      this.showAdd=true;
+      if(this.luxPath==""){
+        this.$message.error("没有设置Lux程序位置")
+      }else{
+        this.showAdd=true;
+      }
+      
     },
     cancelDownload(){
       this.showAdd=false;
