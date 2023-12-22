@@ -20,8 +20,14 @@
         class="linkInput"
         v-model="addLink">
       </el-input>
+      <div class="downloadPath">
+        <div class="pathText">保存位置</div>
+        <el-input v-model="downloadPath" :readonly=true>
+          <el-button @click="pickDownloadPath" type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
+        </el-input>
+      </div>
       <div class="addViewFoot" slot="footer">
-        <el-checkbox style="margin-left: 5px;" v-model="m3u8Enable">使用m3u8下载</el-checkbox>
+        <el-checkbox v-model="m3u8Enable">使用m3u8下载</el-checkbox>
         <div class="cancelButton" @click="cancelDownload">取消</div>
         <div class="downloadButton" @click="downloadHandler">下载</div>
       </div>
@@ -30,6 +36,7 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron';
 export default {
   props: {
     savePath: String,
@@ -37,25 +44,42 @@ export default {
   },
   data() {
     return {
-      showAdd: false,
+      showAdd: true,
       addLink: "",
       m3u8Enable: false,
 
       downloadList: [],
+      downloadPath: "",
     }
   },
   methods: {
+    pickDownloadPath(){
+      ipcRenderer.send('pickDownloadPath');
+    },
+    getDownloadPath(event, arg){
+      if(arg==undefined){
+        this.savePathInput="";
+        return;
+      }
+      if(arg==""){
+        return;
+      }
+      this.downloadPath=arg;
+    },
     newDownloadClick(){
       if(this.luxPath==""){
         this.$message.error("没有设置Lux程序路径")
       }else{
+        this.downloadPath=this.savePath
         this.showAdd=true;
       }
-      
     },
     cancelDownload(){
       this.showAdd=false;
-      this.addLink="";
+      setTimeout(() => {
+        this.addLink="";
+        this.downloadPath=""
+      }, 500);
     },
     downloadHandler(){
       if(this.addLink==""){
@@ -65,8 +89,13 @@ export default {
         this.showAdd=false;
         this.addLink="";
         this.m3u8Enable=false;
+        this.downloadPath="";
       }
     }
+  },
+  created() {
+    ipcRenderer.removeAllListeners('getDownloadPath');
+    ipcRenderer.on('getDownloadPath', this.getDownloadPath);
   },
 }
 </script>
@@ -79,6 +108,15 @@ export default {
 </style>
 
 <style scoped>
+.pathText{
+  width: 80px;
+  text-align: left;
+}
+.downloadPath{
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
 .cancelButton{
   margin-right: 10px;
   border: 1px solid white;

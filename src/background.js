@@ -75,6 +75,21 @@ ipcMain.on("pickLuxPath", async (event) => {
 	});
 });
 
+// 选择下载路径(新建界面)
+ipcMain.on("pickDownloadPath", async (event) => {
+	dialog.showOpenDialog(win, {
+		properties: ['openDirectory'],
+	}).then(result => {
+		const folderPath = result.filePaths[0];
+		win.webContents.send('folder-selected', folderPath);
+		event.reply('getDownloadPath', folderPath);
+	})
+	.catch(err => {
+		event.reply('getDownloadPath', "");
+	});
+});
+
+
 // 选择下载路径
 ipcMain.on("pickSavePath", async (event) => {
 	dialog.showOpenDialog(win, {
