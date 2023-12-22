@@ -33,7 +33,7 @@
 export default {
   data() {
     return {
-      showAdd: true,
+      showAdd: false,
       addLink: "",
       m3u8Enable: false,
     }
