@@ -1,6 +1,9 @@
 <template>
   <div class="app">
-    设置
+    <div class="titleBar">
+      <div class="title">设置</div>
+    </div>
+    <div class="diviline"></div>
   </div>
 </template>
 
@@ -18,7 +21,24 @@ export default {
 </script>
 
 <style scoped>
+.diviline{
+  width: 100%;
+  height: 1px;
+  border-color: lightgrey;
+  background-color: lightgrey;
+}
+.title{
+  font-size: 18px;
+  font-weight: bolder;
+}
+.titleBar{
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  height: 35px;
+}
 .app{
   user-select: none;
+  padding: 20px 20px 20px 20px;
 }
 </style>
