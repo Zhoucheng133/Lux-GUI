@@ -42,11 +42,17 @@ export default {
       this.$emit("changeSettings", this.luxPathInput, this.savePathInput);
     },
     getLuxPath(event, arg){
+      if(arg==""){
+        return;
+      }
       this.luxPathInput=arg;
     },
     getSavePath(event, arg){
       if(arg==undefined){
         this.savePathInput="";
+        return;
+      }
+      if(arg==""){
         return;
       }
       this.savePathInput=arg;
