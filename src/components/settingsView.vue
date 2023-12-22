@@ -9,7 +9,7 @@
         <div class="itemText">Lux程序路径</div>
         <div class="itemIndex">
           <el-input v-model="luxPath" :readonly=true>
-            <el-button type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
+            <el-button @click="pickLuxPath" type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
           </el-input>
         </div>
       </div>
@@ -17,7 +17,7 @@
         <div class="itemText">默认下载路径</div>
         <div class="itemIndex">
           <el-input v-model="savePath" :readonly=true>
-            <el-button type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
+            <el-button @click="pickSavePath" type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
           </el-input>
         </div>
       </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron';
 export default {
   data() {
     return {
@@ -34,7 +35,25 @@ export default {
     }
   },
   methods: {
-    
+    getLuxPath(event, arg){
+      this.luxPath=arg;
+    },
+    getSavePath(event, arg){
+      this.savePath=arg;
+    },
+
+    pickSavePath(){
+      ipcRenderer.send('pickSavePath');
+    },
+    pickLuxPath(){
+      ipcRenderer.send('pickLuxPath');
+    },
+  },
+  created() {
+    ipcRenderer.removeAllListeners('getSavePath');
+    ipcRenderer.removeAllListeners('getLuxPath');
+    ipcRenderer.on('getSavePath', this.getSavePath);
+    ipcRenderer.on('getLuxPath', this.getLuxPath);
   },
 }
 </script>
