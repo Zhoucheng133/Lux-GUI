@@ -49,7 +49,7 @@ export default {
       isMax: false,
       showWindowOp: false,
 
-      nowPage: "downloadList"
+      nowPage: "settings"
     }
   },
   methods: {
