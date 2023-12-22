@@ -20,10 +20,8 @@
         class="linkInput"
         v-model="addLink">
       </el-input>
-      <div class="checkBox">
-        <el-checkbox v-model="m3u8Enable">使用m3u8下载</el-checkbox>
-      </div>
       <div class="addViewFoot" slot="footer">
+        <el-checkbox style="margin-left: 5px;" v-model="m3u8Enable">使用m3u8下载</el-checkbox>
         <div class="cancelButton" @click="cancelDownload">取消</div>
         <div class="downloadButton" @click="downloadHandler">下载</div>
       </div>
@@ -35,7 +33,7 @@
 export default {
   data() {
     return {
-      showAdd: false,
+      showAdd: true,
       addLink: "",
       m3u8Enable: false,
     }
@@ -64,7 +62,7 @@ export default {
 <style>
 .el-dialog__body{
   padding-top: 10px !important;
-  padding-bottom: 10px !important;
+  padding-bottom: 0 !important;
 }
 </style>
 
@@ -72,6 +70,7 @@ export default {
 .cancelButton{
   margin-right: 10px;
   border: 1px solid white;
+  margin-left: auto;
 }
 .downloadButton:hover{
   background-color: grey;
@@ -96,8 +95,8 @@ export default {
 }
 .addViewFoot{
   display: flex;
-  justify-content: flex-end;
   font-size: 14px;
+  align-items: center;
 }
 .checkBox{
   margin-top: 10px;
