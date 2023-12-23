@@ -3,6 +3,7 @@
 import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const { spawn } = require('child_process');
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -56,6 +57,13 @@ if (isDevelopment) {
     })
   }
 }
+
+// 使用Lux下载
+ipcMain.on("luxDownload", async (event, link, savePath) => {
+  // lux -o path "link"
+  const command = 'ls';
+  const args = ['-al'];
+});
 
 // 选择Lux路径
 ipcMain.on("pickLuxPath", async (event) => {
