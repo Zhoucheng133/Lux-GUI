@@ -23,7 +23,12 @@
       </div>
       <div class="item" style="align-items: flex-start;">
         <div class="itemText">Header</div>
-        <el-input type="textarea" v-model="headerInput" :rows="3" resize="none"></el-input>
+        <div>
+          <el-input type="textarea" v-model="headerInput" :rows="3" resize="none"></el-input>
+          <div style="display: flex;">
+            <div class="saveHeaderBt">保存Header</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -102,6 +107,22 @@ export default {
 </style>
 
 <style scoped>
+.saveHeaderBt:hover{
+  border: 1px solid grey;
+  cursor: pointer;
+}
+.saveHeaderBt{
+  margin-left: auto;
+  margin-top: 10px;
+  border: 1px solid rgb(200, 200, 200);
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: all .2s linear;
+}
 .itemIndex{
   display: flex;
   align-items: center;
