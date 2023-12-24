@@ -11,11 +11,13 @@ protocol.registerSchemesAsPrivileged([
 let win;
 
 async function createWindow() {
+  const path = require('path');
   win = new BrowserWindow({
     width: 1000,
     height: 700,
     frame: false,
     titleBarStyle: 'hiddenInset',
+    icon: path.join(__dirname, 'build/icon.png'),
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
