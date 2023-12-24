@@ -22,11 +22,11 @@
         </div>
       </div>
       <div class="item" style="align-items: flex-start;">
-        <div class="itemText">Header</div>
+        <div class="itemText">默认Header</div>
         <div>
-          <el-input type="textarea" v-model="headerInput" :rows="3" resize="none"></el-input>
+          <el-input type="textarea" v-model="headerInput" :rows="3" resize="none" :spellcheck="false"></el-input>
           <div style="display: flex;">
-            <div class="saveHeaderBt">保存Header</div>
+            <div class="saveHeaderBt" @click="saveHeader">保存Header</div>
           </div>
         </div>
       </div>
@@ -45,6 +45,10 @@ export default {
     }
   },
   methods: {
+    saveHeader(){
+      localStorage.setItem("header", this.headerInput);
+      this.$message.success({"message": "已保存默认Header", offset: 50, duration: 2000});
+    },
     submitSettings(){
       // console.log(this.luxPathInput, this.savePathInput);
       localStorage.setItem("luxPath", this.luxPathInput);
@@ -86,6 +90,9 @@ export default {
     }
     if(localStorage.getItem("savePath")!=null && localStorage.getItem("savePath")!=""){
       this.savePathInput=localStorage.getItem("savePath");
+    }
+    if(localStorage.getItem("header")!=null && localStorage.getItem("header")!=""){
+      this.headerInput=localStorage.getItem("header");
     }
     this.submitSettings();
   },
