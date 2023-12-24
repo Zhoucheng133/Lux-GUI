@@ -95,6 +95,8 @@ export default {
     downloadHandler(){
       if(this.addLink==""){
         this.$message.error({message: "没有输入下载链接", offset: 50, duration: 2000});
+      }else if(this.downloadPath==""){
+        this.$message.error({message: "没有选择保存位置", offset: 50, duration: 2000});
       }else{
         if(this.headerEnable){
           ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath, this.header);
