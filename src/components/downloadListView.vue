@@ -52,6 +52,7 @@ export default {
     luxPath: String,
     ffmpegPath: String,
     header: String,
+    list: Array,
   },
   data() {
     return {
@@ -60,7 +61,6 @@ export default {
       m3u8Enable: false,
       headerEnable: true,
 
-      list: [],
       downloadPath: "",
     }
   },

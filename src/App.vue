@@ -20,7 +20,7 @@
       @setNowPage="setNowPage" 
       :nowPage="nowPage" />
     <div class="content">
-      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" :header="header" :ffmpegPath="ffmpegPath" />
+      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" :header="header" :ffmpegPath="ffmpegPath" :list="list" />
       <completeListView v-show="nowPage=='completeList'"/>
       <settingsView v-show="nowPage=='settings'" :savePath="savePath" :luxPath="luxPath" @changeSettings="changeSettings" @saveHeader="saveHeader"/>
     </div>
@@ -56,6 +56,9 @@ export default {
       luxPath: "",
       ffmpegPath: "",
       header: "",
+
+      // 下载的所有列表
+      list: [],
     }
   },
   methods: {
