@@ -7,6 +7,14 @@
       </div>
     </div>
     <div class="diviline"></div>
+    <div class="content">
+      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
+      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
+      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
+      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
+      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
+      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表
+    </div>
 
     <el-dialog :visible.sync="showAdd" width="600px">
       <div class="addViewTitle" slot="title">
@@ -120,6 +128,14 @@ export default {
 </style>
 
 <style scoped>
+.content{
+  width: 100%;
+  display: flex;
+  height: calc(100vh - 30px - 40px - 46px);
+  overflow: auto;
+  flex-direction: column;
+  align-items: center;
+}
 .pathText{
   width: 80px;
   text-align: left;

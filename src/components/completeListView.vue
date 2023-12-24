@@ -4,6 +4,14 @@
       <div class="title">完成列表</div>
     </div>
     <div class="diviline"></div>
+    <div class="content">
+      完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>
+      完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>
+      完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>
+      完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>
+      完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>
+      完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表<br>完成列表
+    </div>
   </div>
 </template>
 
@@ -21,6 +29,14 @@ export default {
 </script>
 
 <style scoped>
+.content{
+  width: 100%;
+  display: flex;
+  height: calc(100vh - 30px - 40px - 46px);
+  overflow: auto;
+  flex-direction: column;
+  align-items: center;
+}
 .diviline{
   width: 100%;
   height: 1px;
