@@ -23,7 +23,7 @@
       </div>
       <div class="item" style="align-items: flex-start;">
         <div class="itemText">Header</div>
-        <el-input type="textarea" v-model="headerInput"></el-input>
+        <el-input type="textarea" v-model="headerInput" :rows="3" resize="none"></el-input>
       </div>
     </div>
   </div>
