@@ -58,7 +58,7 @@ if (isDevelopment) {
 }
 
 // 使用Lux下载
-ipcMain.on("luxDownload", async (event, link, luxPath, savePath) => {
+ipcMain.on("luxDownload", async (event, link, luxPath, savePath, header) => {
   var feedBack={
     title: "",
     size: "",
@@ -78,7 +78,13 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath) => {
   });
 
   // 下载
-  const fullCommand = `${luxPath} -o ${savePath} "${link}"`;
+  var fullCommand = "";
+  if(header){
+    fullCommand = `${luxPath} -o ${savePath} -c ${header} "${link}"`;
+  }else{
+    fullCommand = `${luxPath} -o ${savePath} "${link}"`;
+  }
+  
   const childProcess = spawn(fullCommand, { shell: true });
   childProcess.stderr.on('data', (data) => {
     var downloadInfo="";

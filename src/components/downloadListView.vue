@@ -51,7 +51,7 @@ export default {
       m3u8Enable: false,
       headerEnable: true,
 
-      downloadList: [],
+      list: [],
       downloadPath: "",
     }
   },
@@ -88,7 +88,11 @@ export default {
       if(this.addLink==""){
         this.$message.error({message: "没有输入下载链接", offset: 50, duration: 2000});
       }else{
-        ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath);
+        if(this.headerEnable){
+          ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath, this.header);
+        }else{
+          ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath);
+        }
         this.showAdd=false;
         this.addLink="";
         this.m3u8Enable=false;
