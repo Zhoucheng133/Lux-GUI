@@ -28,6 +28,7 @@
       </div>
       <div class="addViewFoot" slot="footer">
         <el-checkbox v-model="m3u8Enable">使用m3u8下载</el-checkbox>
+        <el-checkbox v-model="headerEnable">使用默认Header</el-checkbox>
         <div class="cancelButton" @click="cancelDownload">取消</div>
         <div class="downloadButton" @click="downloadHandler">下载</div>
       </div>
@@ -47,6 +48,7 @@ export default {
       showAdd: false,
       addLink: "",
       m3u8Enable: false,
+      headerEnable: true,
 
       downloadList: [],
       downloadPath: "",
