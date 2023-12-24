@@ -117,6 +117,24 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath, header) => {
   });
 });
 
+// 选择FFmpeg路径
+ipcMain.on("pickFFmpegPath", async (event) => {
+	dialog.showOpenDialog(win, {
+		properties: ['openFile'],  // 更新这里以选择文件而不是文件夹
+	}).then(result => {
+		if (!result.canceled) {  // 检查用户是否取消选择
+			const filePath = result.filePaths[0];
+			win.webContents.send('file-selected', filePath);  // 更新事件名称
+			event.reply('getFFmpegPath', filePath);
+		} else {
+			event.reply('getFFmpegPath', "");  // 处理用户取消选择的情况
+		}                                     
+	})
+	.catch(err => {
+		event.reply('getFFmpegPath', "");
+	});
+});
+
 // 选择Lux路径
 ipcMain.on("pickLuxPath", async (event) => {
 	dialog.showOpenDialog(win, {

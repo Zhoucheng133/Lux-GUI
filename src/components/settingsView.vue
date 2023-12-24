@@ -14,6 +14,14 @@
         </div>
       </div>
       <div class="item">
+        <div class="itemText">FFmpeg路径</div>
+        <div class="itemIndex">
+          <el-input v-model="ffmpegPathInput" :readonly=true>
+            <el-button @click="pickFFmpegPath" type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
+          </el-input>
+        </div>
+      </div>
+      <div class="item">
         <div class="itemText">默认下载路径</div>
         <div class="itemIndex">
           <el-input v-model="savePathInput" :readonly=true>
@@ -48,6 +56,7 @@ export default {
   data() {
     return {
       luxPathInput: "",
+      ffmpegPathInput: "",
       savePathInput: "",
       headerInput: "",
 
@@ -64,7 +73,8 @@ export default {
       // console.log(this.luxPathInput, this.savePathInput);
       localStorage.setItem("luxPath", this.luxPathInput);
       localStorage.setItem("savePath", this.savePathInput);
-      this.$emit("changeSettings", this.luxPathInput, this.savePathInput);
+      localStorage.setItem("ffmpegPath", this.ffmpegPathInput);
+      this.$emit("changeSettings", this.luxPathInput, this.savePathInput, this.ffmpegPathInput);
     },
     getLuxPath(event, arg){
       if(arg==""){
@@ -82,22 +92,35 @@ export default {
       }
       this.savePathInput=arg;
     },
-
+    getFFmpegPath(event, arg){
+      if(arg==""){
+        return;
+      }
+      this.ffmpegPathInput=arg;
+    },
     pickSavePath(){
       ipcRenderer.send('pickSavePath');
     },
     pickLuxPath(){
       ipcRenderer.send('pickLuxPath');
     },
+    pickFFmpegPath(){
+      ipcRenderer.send('pickFFmpegPath');
+    },
   },
   created() {
     ipcRenderer.removeAllListeners('getSavePath');
     ipcRenderer.removeAllListeners('getLuxPath');
+    ipcRenderer.removeAllListeners('getFFmpegPath');
     ipcRenderer.on('getSavePath', this.getSavePath);
     ipcRenderer.on('getLuxPath', this.getLuxPath);
+    ipcRenderer.on('getFFmpegPath', this.getFFmpegPath);
 
     if(localStorage.getItem("luxPath")!=null && localStorage.getItem("luxPath")!=""){
       this.luxPathInput=localStorage.getItem("luxPath");
+    }
+    if(localStorage.getItem("ffmpegPath")!=null && localStorage.getItem("ffmpegPath")!=""){
+      this.ffmpegPathInput=localStorage.getItem("ffmpegPath");
     }
     if(localStorage.getItem("savePath")!=null && localStorage.getItem("savePath")!=""){
       this.savePathInput=localStorage.getItem("savePath");
@@ -113,6 +136,9 @@ export default {
       this.submitSettings();
     },
     savePathInput: function(){
+      this.submitSettings();
+    },
+    ffmpegPathInput: function(){
       this.submitSettings();
     }
   },
