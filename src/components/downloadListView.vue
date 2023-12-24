@@ -8,12 +8,7 @@
     </div>
     <div class="diviline"></div>
     <div class="content">
-      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
-      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
-      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
-      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
-      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>
-      下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表<br>下载列表
+      Content
     </div>
 
     <el-dialog :visible.sync="showAdd" width="600px">
@@ -102,9 +97,9 @@ export default {
         this.$message.error({message: "没有选择保存位置", offset: 50, duration: 2000});
       }else{
         if(this.headerEnable){
-          ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath, this.header);
+          ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath, this.ffmpegPath, this.header);
         }else{
-          ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath);
+          ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath, this.ffmpegPath);
         }
         this.showAdd=false;
         this.addLink="";

@@ -60,7 +60,7 @@ if (isDevelopment) {
 }
 
 // 使用Lux下载
-ipcMain.on("luxDownload", async (event, link, luxPath, savePath, header) => {
+ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, header) => {
   var feedBack={
     title: "",
     size: "",
@@ -74,47 +74,50 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath, header) => {
   var title="";
   const infoProcess=spawn(command, { shell: true });
   infoProcess.stdout.on('data', (data) => {
-    data=JSON.parse(String(data));
-    title=data[0].title;
-    feedBack.title=title;
+    data = JSON.parse(String(data))
+    title = data[0].title
+    feedBack.title = title.replaceAll("/", " ")
   });
 
-  // 下载
-  var fullCommand = "";
-  if(header){
-    fullCommand = `${luxPath} -o ${savePath} -c ${header} "${link}"`;
-  }else{
-    fullCommand = `${luxPath} -o ${savePath} "${link}"`;
-  }
-  
-  const childProcess = spawn(fullCommand, { shell: true });
-  childProcess.stderr.on('data', (data) => {
-    var downloadInfo="";
-    var bracketIndex = String(data).indexOf("[");
-    if (bracketIndex !== -1) {
-      downloadInfo = String(data).substring(0, bracketIndex);
-    }
-    feedBack.size=downloadInfo.substring(downloadInfo.indexOf('/')+2, downloadInfo.length)
-    var lastSpaceIndex = String(data).lastIndexOf(" ");
-    var secondLastSpaceIndex = String(data).lastIndexOf(" ", lastSpaceIndex - 1);
-    if (lastSpaceIndex !== -1 && secondLastSpaceIndex !== -1) {
-      var betweenSpaces = String(data).substring(secondLastSpaceIndex + 1, lastSpaceIndex);
-      feedBack.percentage=betweenSpaces;
-    }
-    event.reply('downloadingHandler', feedBack);
-  });
-
-  childProcess.on('close', (code) => {
-    if(code==0){
-      console.log("finish");
-      feedBack.status="success";
-      event.reply('downloadingHandler', feedBack);
+  infoProcess.on("close", ()=>{
+    // 下载
+    var fullCommand = "";
+    if(header){
+      fullCommand = `${luxPath} -o ${savePath} -O "${feedBack.title}" -c ${header} "${link}"`;
     }else{
-      console.log("err");
-      feedBack.status="err";
-      event.reply('downloadingHandler', feedBack);
+      fullCommand = `${luxPath} -o ${savePath} -O "${feedBack.title}" "${link}"`;
     }
-  });
+    
+    const childProcess = spawn(fullCommand, { shell: true });
+
+    childProcess.stderr.on('data', (data) => {
+      var downloadInfo="";
+      var bracketIndex = String(data).indexOf("[");
+      if (bracketIndex !== -1) {
+        downloadInfo = String(data).substring(0, bracketIndex);
+      }
+      feedBack.size=downloadInfo.substring(downloadInfo.indexOf('/')+2, downloadInfo.length)
+      var lastSpaceIndex = String(data).lastIndexOf(" ");
+      var secondLastSpaceIndex = String(data).lastIndexOf(" ", lastSpaceIndex - 1);
+      if (lastSpaceIndex !== -1 && secondLastSpaceIndex !== -1) {
+        var betweenSpaces = String(data).substring(secondLastSpaceIndex + 1, lastSpaceIndex);
+        feedBack.percentage=betweenSpaces;
+      }
+      event.reply('downloadingHandler', feedBack);
+    });
+
+    childProcess.on('close', (code) => {
+      if(code==0){
+        console.log("finish");
+        feedBack.status="success";
+        event.reply('downloadingHandler', feedBack);
+      }else{
+        console.log("err");
+        feedBack.status="err";
+        event.reply('downloadingHandler', feedBack);
+      }
+    });
+  })
 });
 
 // 选择FFmpeg路径
