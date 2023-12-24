@@ -1,3 +1,6 @@
 .mainColor{
-  color: rgb(0, 166, 255)
+  color: rgb(160, 160, 160);
+}
+.mainColor:hover{
+  color: grey;
 }
