@@ -3,7 +3,6 @@
 import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-const { spawn } = require('child_process');
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -59,10 +58,55 @@ if (isDevelopment) {
 }
 
 // 使用Lux下载
-ipcMain.on("luxDownload", async (event, link, savePath) => {
-  // lux -o path "link"
-  const command = 'ls';
-  const args = ['-al'];
+ipcMain.on("luxDownload", async (event, link, luxPath, savePath) => {
+  var feedBack={
+    title: "",
+    size: "",
+    status: "process",
+    percentage: "0%"
+  }
+  const { spawn } = require('child_process');
+
+  // 获取信息
+  const command = `${luxPath} -j "${link}"`;
+  var title="";
+  const infoProcess=spawn(command, { shell: true });
+  infoProcess.stdout.on('data', (data) => {
+    data=JSON.parse(String(data));
+    title=data[0].title;
+    feedBack.title=title;
+  });
+
+  // 下载
+  const fullCommand = `${luxPath} -o ${savePath} "${link}"`;
+  const childProcess = spawn(fullCommand, { shell: true });
+  childProcess.stderr.on('data', (data) => {
+    var downloadInfo="";
+    var bracketIndex = String(data).indexOf("[");
+    if (bracketIndex !== -1) {
+      downloadInfo = String(data).substring(0, bracketIndex);
+    }
+    feedBack.size=downloadInfo.substring(downloadInfo.indexOf('/')+2, downloadInfo.length)
+    var lastSpaceIndex = String(data).lastIndexOf(" ");
+    var secondLastSpaceIndex = String(data).lastIndexOf(" ", lastSpaceIndex - 1);
+    if (lastSpaceIndex !== -1 && secondLastSpaceIndex !== -1) {
+      var betweenSpaces = String(data).substring(secondLastSpaceIndex + 1, lastSpaceIndex);
+      feedBack.percentage=betweenSpaces;
+    }
+    event.reply('downloadingHandler', feedBack);
+  });
+
+  childProcess.on('close', (code) => {
+    if(code==0){
+      console.log("finish");
+      feedBack.status="success";
+      event.reply('downloadingHandler', feedBack);
+    }else{
+      console.log("err");
+      feedBack.status="err";
+      event.reply('downloadingHandler', feedBack);
+    }
+  });
 });
 
 // 选择Lux路径
@@ -76,7 +120,7 @@ ipcMain.on("pickLuxPath", async (event) => {
 			event.reply('getLuxPath', filePath);
 		} else {
 			event.reply('getLuxPath', "");  // 处理用户取消选择的情况
-		}
+		}                                     
 	})
 	.catch(err => {
 		event.reply('getLuxPath', "");

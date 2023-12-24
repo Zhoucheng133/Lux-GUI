@@ -85,17 +85,22 @@ export default {
       if(this.addLink==""){
         this.$message.error({message: "没有输入下载链接", offset: 50, duration: 2000});
       }else{
-        // TODO 添加到下载队列
+        ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath);
         this.showAdd=false;
         this.addLink="";
         this.m3u8Enable=false;
         this.downloadPath="";
       }
+    },
+    downloadingHandler(event, arg){
+      console.log(arg);
     }
   },
   created() {
     ipcRenderer.removeAllListeners('getDownloadPath');
+    ipcRenderer.removeAllListeners('downloadingHandler');
     ipcRenderer.on('getDownloadPath', this.getDownloadPath);
+    ipcRenderer.on('downloadingHandler', this.downloadingHandler);
   },
 }
 </script>
