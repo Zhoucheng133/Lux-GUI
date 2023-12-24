@@ -21,6 +21,10 @@
           </el-input>
         </div>
       </div>
+      <div class="item" style="align-items: flex-start;">
+        <div class="itemText">Header</div>
+        <el-input type="textarea" v-model="headerInput"></el-input>
+      </div>
     </div>
   </div>
 </template>
@@ -32,6 +36,7 @@ export default {
     return {
       luxPathInput: "",
       savePathInput: "",
+      headerInput: "",
     }
   },
   methods: {
