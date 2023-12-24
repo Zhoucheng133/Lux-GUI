@@ -16,7 +16,7 @@
       <div class="item">
         <div class="itemText">FFmpeg路径</div>
         <div class="itemIndex">
-          <el-input v-model="ffmpegPathInput" :readonly=true>
+          <el-input v-model="ffmpegPathInput" :spellcheck="false">
             <el-button @click="pickFFmpegPath" type="primary" slot="append" icon="el-icon-folder-opened"></el-button>
           </el-input>
         </div>
