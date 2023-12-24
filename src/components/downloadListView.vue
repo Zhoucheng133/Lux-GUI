@@ -50,6 +50,7 @@ export default {
   props: {
     savePath: String,
     luxPath: String,
+    ffmpegPath: String,
     header: String,
   },
   data() {
@@ -80,6 +81,8 @@ export default {
     newDownloadClick(){
       if(this.luxPath==""){
         this.$message.error({message: "没有设置Lux程序路径", offset: 50, duration: 2000})
+      }else if(this.ffmpegPath==""){
+        this.$message.error({message: "没有设置FFmpeg路径", offset: 50, duration: 2000})
       }else{
         this.downloadPath=this.savePath
         this.showAdd=true;
