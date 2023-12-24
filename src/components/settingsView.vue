@@ -48,6 +48,7 @@ export default {
     saveHeader(){
       localStorage.setItem("header", this.headerInput);
       this.$message.success({"message": "已保存默认Header", offset: 50, duration: 2000});
+      this.$emit("saveHeader", this.headerInput);
     },
     submitSettings(){
       // console.log(this.luxPathInput, this.savePathInput);

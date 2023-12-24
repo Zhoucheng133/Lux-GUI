@@ -42,6 +42,7 @@ export default {
   props: {
     savePath: String,
     luxPath: String,
+    header: String,
   },
   data() {
     return {

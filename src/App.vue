@@ -20,9 +20,9 @@
       @setNowPage="setNowPage" 
       :nowPage="nowPage" />
     <div class="content">
-      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" />
+      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" :header="header" />
       <completeListView v-show="nowPage=='completeList'"/>
-      <settingsView v-show="nowPage=='settings'" :savePath="savePath" :luxPath="luxPath" @changeSettings="changeSettings" />
+      <settingsView v-show="nowPage=='settings'" :savePath="savePath" :luxPath="luxPath" @changeSettings="changeSettings" @saveHeader="saveHeader"/>
     </div>
   </div>
 </template>
@@ -54,9 +54,13 @@ export default {
 
       savePath: "",
       luxPath: "",
+      header: "",
     }
   },
   methods: {
+    saveHeader(header){
+      this.header=header;
+    },
     changeSettings(luxPath, savePath){
       this.luxPath=luxPath;
       this.savePath=savePath;
@@ -90,6 +94,9 @@ export default {
     ipcRenderer.removeAllListeners('sysFeedback');
     ipcRenderer.on('sysFeedback', this.sysFeedback);
     ipcRenderer.send('getSys');
+    if(localStorage.getItem("header")!=null && localStorage.getItem("header")!=""){
+      this.header=localStorage.getItem("header");
+    }
   },
 }
 </script>
