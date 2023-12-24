@@ -30,6 +30,14 @@
           </div>
         </div>
       </div>
+      <div class="item" style="align-items: flex-start;">
+        <div class="itemText">关于</div>
+        <div class="aboutContent">
+          <img src="@/icon.png" alt="" width="100px">
+          <div class="appName">Lux GUI</div>
+          <div class="appVer">{{ appVer }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -42,6 +50,8 @@ export default {
       luxPathInput: "",
       savePathInput: "",
       headerInput: "",
+
+      appVer: "",
     }
   },
   methods: {
@@ -96,6 +106,7 @@ export default {
       this.headerInput=localStorage.getItem("header");
     }
     this.submitSettings();
+    this.appVer = process.env.VUE_APP_VERSION;
   },
   watch: {
     luxPathInput: function(){
@@ -115,6 +126,19 @@ export default {
 </style>
 
 <style scoped>
+.appVer{
+  color: grey;
+  font-size: 14px;
+}
+.appName{
+  font-size: 16px;
+  font-weight: bold;
+}
+.aboutContent{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .saveHeaderBt:hover{
   border: 1px solid grey;
   cursor: pointer;
@@ -151,8 +175,9 @@ export default {
 }
 .content{
   width: 100%;
-  /* background-color: red; */
   display: flex;
+  height: calc(100vh - 30px - 40px - 46px);
+  overflow: auto;
   flex-direction: column;
   align-items: center;
 }
