@@ -49,8 +49,8 @@ export default {
       isMax: false,
       showWindowOp: false,
 
-      nowPage: "settings",
-      // nowPage: "downloadList",
+      // nowPage: "settings",
+      nowPage: "downloadList",
 
       savePath: "",
       luxPath: "",
