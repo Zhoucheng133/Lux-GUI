@@ -59,6 +59,49 @@ if (isDevelopment) {
   }
 }
 
+// 删除原始文件
+function delOriginFile(savePath, title){
+  const fs = require('fs');
+  const audioFilePath = `${savePath}/${title}[1].m4a`;
+  const videoFilePath = `${savePath}/${title}[0].mp4`;
+  fs.unlink(audioFilePath, (err) => {
+    if (err) {
+      console.error('无法删除文件:', err);
+    } else {
+      console.log('文件删除成功！');
+    }
+  });
+  fs.unlink(videoFilePath, (err) => {
+    if (err) {
+      console.error('无法删除文件:', err);
+    } else {
+      console.log('文件删除成功！');
+    }
+  });
+}
+
+// 判定是否合并
+function mergeController(savePath, title, ffmpegPath){
+  const ffmpeg = require('fluent-ffmpeg');
+  ffmpeg.setFfmpegPath(ffmpegPath);
+  const audioFilePath = `${savePath}/${title}[1].m4a`;
+  const videoFilePath = `${savePath}/${title}[0].mp4`;
+  const outputFilePath = `${savePath}/${title}.mp4`;
+  ffmpeg()
+  .input(audioFilePath)
+  .input(videoFilePath)
+  .outputOptions('-c', 'copy')
+  .output(outputFilePath)
+  .on('end', () => {
+    console.log('合并完成！');
+    delOriginFile(savePath, title);
+  })
+  .on('error', (err) => {
+    console.error('合并失败:', err);
+  })
+  .run();
+}
+
 // 使用Lux下载
 ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, header) => {
   var feedBack={
@@ -107,6 +150,7 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, head
     });
 
     childProcess.on('close', (code) => {
+      mergeController(savePath, feedBack.title, ffmpegPath);
       if(code==0){
         console.log("finish");
         feedBack.status="success";
