@@ -62,8 +62,11 @@ if (isDevelopment) {
 // 删除原始文件
 function delOriginFile(savePath, title){
   const fs = require('fs');
-  const audioFilePath = `${savePath}/${title}[1].m4a`;
-  const videoFilePath = `${savePath}/${title}[0].mp4`;
+  const path=require("path");
+  // const audioFilePath = `${savePath}/${title}[1].m4a`;
+  const audioFilePath = path.join(savePath, `${title}[1].m4a`);
+  // const videoFilePath = `${savePath}/${title}[0].mp4`;
+  const videoFilePath = path.join(savePath, `/${title}[0].mp4`)
   fs.unlink(audioFilePath, (err) => {
     if (err) {
       console.error('无法删除文件:', err);
@@ -84,9 +87,13 @@ function delOriginFile(savePath, title){
 function mergeController(savePath, title, ffmpegPath){
   const ffmpeg = require('fluent-ffmpeg');
   ffmpeg.setFfmpegPath(ffmpegPath);
-  const audioFilePath = `${savePath}/${title}[1].m4a`;
-  const videoFilePath = `${savePath}/${title}[0].mp4`;
-  const outputFilePath = `${savePath}/${title}.mp4`;
+  const path=require("path");
+  // const audioFilePath = `${savePath}/${title}[1].m4a`;
+  // const videoFilePath = `${savePath}/${title}[0].mp4`;
+  // const outputFilePath = `${savePath}/${title}.mp4`;
+  const audioFilePath = path.join(savePath, `${title}[1].m4a`);
+  const videoFilePath = path.join(savePath,`${title}[0].mp4`);
+  const outputFilePath = path.join(savePath, `${title}.mp4`);
   ffmpeg()
   .input(audioFilePath)
   .input(videoFilePath)
