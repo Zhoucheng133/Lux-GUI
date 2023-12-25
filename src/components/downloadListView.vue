@@ -240,16 +240,17 @@ export default {
   margin-left: auto;
 }
 .downloadButton:hover{
-  background-color: grey;
+  background-color: rgb(0, 187, 177);
 }
 .cancelButton:hover{
-  border: 1px solid grey;
+  border: 1px solid rgb(0, 220, 210);
+  color: rgb(0, 220, 210);
 }
 .cancelButton:hover, .downloadButton:hover{
   cursor: pointer;
 }
 .downloadButton{
-  background-color: rgb(160, 160, 160);
+  background-color: rgb(0, 220, 210);
   color: white;
 }
 .cancelButton, .downloadButton{

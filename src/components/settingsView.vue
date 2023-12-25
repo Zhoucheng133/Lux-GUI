@@ -172,7 +172,8 @@ export default {
   align-items: center;
 }
 .saveHeaderBt:hover{
-  border: 1px solid grey;
+  border: 1px solid rgb(0, 220, 210);
+  color: rgb(0, 220, 210);
   cursor: pointer;
 }
 .saveHeaderBt{
