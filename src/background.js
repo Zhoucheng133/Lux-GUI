@@ -105,6 +105,7 @@ function mergeController(savePath, title, ffmpegPath){
 // 使用Lux下载
 ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, header) => {
   var feedBack={
+    pid: 0,
     title: "",
     size: "",
     status: "process",
@@ -132,6 +133,7 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, head
     }
     
     const childProcess = spawn(fullCommand, { shell: true });
+    feedBack.pid=childProcess.pid;
 
     childProcess.stderr.on('data', (data) => {
       var downloadInfo="";
