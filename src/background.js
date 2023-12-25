@@ -109,7 +109,7 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, head
     title: "",
     size: "",
     status: "process",
-    percentage: "0%"
+    percentage: 0
   }
   const { spawn } = require('child_process');
 
@@ -145,8 +145,9 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, head
       var lastSpaceIndex = String(data).lastIndexOf(" ");
       var secondLastSpaceIndex = String(data).lastIndexOf(" ", lastSpaceIndex - 1);
       if (lastSpaceIndex !== -1 && secondLastSpaceIndex !== -1) {
-        var betweenSpaces = String(data).substring(secondLastSpaceIndex + 1, lastSpaceIndex);
-        feedBack.percentage=betweenSpaces;
+        var betweenSpaces = String(data).substring(secondLastSpaceIndex + 1, lastSpaceIndex - 1);
+        feedBack.percentage=parseFloat(betweenSpaces);
+        console.log(feedBack.percentage);
       }
       event.reply('downloadingHandler', feedBack);
     });

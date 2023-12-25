@@ -8,10 +8,10 @@
     </div>
     <div class="diviline"></div>
     <div class="content">
-      <div class="downloadItem">
+      <div class="downloadItem" v-for="(item, index) in list" :key="index">
         <div class="fileTitleBar">
           <div class="fileTitle">
-            文件名显示在这里
+            {{ item.title }}
           </div>
           <div class="operations">
             <div class="openFolder"><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9V41L9 21H39.5V15C39.5 13.8954 38.6046 13 37.5 13H24L19 7H6C4.89543 7 4 7.89543 4 9Z" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M40 41L44 21H8.8125L4 41H40Z" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -19,8 +19,8 @@
           </div>
         </div>
         <div class="progress">
-          <el-progress :percentage="50"></el-progress>
-          <div class="sizeInfo">10mb/10mb</div>
+          <el-progress :percentage="Math.round(item.percentage)"></el-progress>
+          <div class="sizeInfo">{{ showSizeInfo(item.size, item.percentage) }}</div>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@ export default {
     luxPath: String,
     ffmpegPath: String,
     header: String,
-    list: Array,
+    
   },
   data() {
     return {
@@ -71,9 +71,17 @@ export default {
       headerEnable: true,
 
       downloadPath: "",
+      list: [],
     }
   },
   methods: {
+    showSizeInfo(size, percentage){
+      const modifiedSize = size.replace('MiB', 'MB');
+      // 将 percentage 转换为数字，并保留两位小数
+      // 构建结果字符串
+      const result = `${(size.split(' ')[0] * percentage / 100).toFixed(2)}MB / ${modifiedSize}`;
+      return result;
+    },
     pickDownloadPath(){
       ipcRenderer.send('pickDownloadPath');
     },
@@ -122,8 +130,19 @@ export default {
         this.downloadPath="";
       }
     },
+    updateList(arg){
+      const existingItemIndex = this.list.findIndex(item => item.pid === arg.pid);
+      if (existingItemIndex !== -1) {
+        this.list[existingItemIndex].percentage = arg.percentage;
+      } else {
+        this.list.push(arg);
+      }
+      this.$forceUpdate()
+      console.log(this.list[0].percentage);
+      console.log("---Dividing---");
+    },
     downloadingHandler(event, arg){
-      console.log(arg);
+      this.updateList(arg);
     }
   },
   created() {
@@ -152,7 +171,7 @@ export default {
   width: calc(100% - 35px);
   margin-left: 10px;
   margin-top: 20px;
-  grid-template-columns: auto 150px;
+  grid-template-columns: auto 180px;
 }
 .fileTitle{
   font-weight: bold;
