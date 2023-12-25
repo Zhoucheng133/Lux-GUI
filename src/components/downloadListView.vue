@@ -8,7 +8,21 @@
     </div>
     <div class="diviline"></div>
     <div class="content">
-      Content
+      <div class="downloadItem">
+        <div class="fileTitleBar">
+          <div class="fileTitle">
+            文件名显示在这里
+          </div>
+          <div class="operations">
+            <div class="openFolder"><svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9V41L9 21H39.5V15C39.5 13.8954 38.6046 13 37.5 13H24L19 7H6C4.89543 7 4 7.89543 4 9Z" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M40 41L44 21H8.8125L4 41H40Z" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="delFile"><svg width="12" height="12" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+        </div>
+        <div class="progress">
+          <el-progress :percentage="50"></el-progress>
+          <div class="sizeInfo">10mb/10mb</div>
+        </div>
+      </div>
     </div>
 
     <el-dialog :visible.sync="showAdd" width="600px">
@@ -129,6 +143,61 @@ export default {
 </style>
 
 <style scoped>
+.sizeInfo{
+  font-size: 14px;
+  text-align: right;
+}
+.progress{
+  display: grid;
+  width: calc(100% - 35px);
+  margin-left: 10px;
+  margin-top: 20px;
+  grid-template-columns: auto 150px;
+}
+.fileTitle{
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-right: 50px;
+}
+.openFolder{
+  margin-right: 20px;
+}
+.openFolder:hover{
+  cursor: pointer;
+}
+.delFile:hover{
+  cursor: pointer;
+}
+.operations{
+  margin-left: auto;
+  display: flex;
+}
+.fileTitleBar{
+  margin-left: 15px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  width: calc(100% - 40px);
+  font-size: 15px;
+}
+.downloadItem:hover{
+  border: 1px solid grey;
+}
+.downloadItem{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100px;
+  background-color: white;
+  /* width: calc(100% - 30px); */
+  width: calc(100% - 2px);
+  border-radius: 10px;
+  border: 1px solid rgb(160, 160, 160);
+  margin-top: 10px;
+  transition: all linear .2s;
+}
 .content{
   width: 100%;
   display: flex;
