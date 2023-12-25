@@ -87,7 +87,8 @@ export default {
       this.showAdd=false;
       setTimeout(() => {
         this.addLink="";
-        this.downloadPath=""
+        this.downloadPath="";
+        this.headerEnable=true;
       }, 500);
     },
     downloadHandler(){
