@@ -8,7 +8,7 @@
     </div>
     <div class="diviline"></div>
     <div class="content">
-      <div class="downloadItem" v-for="(item, index) in list" :key="index" @dblclick="openFile(item.downloadPath, item.title, item.status)">
+      <div class="downloadItem" v-for="(item, index) in list" :key="index" @dblclick="openFile(item.downloadPath, item.title, item.percentage)">
         <div class="fileTitleBar">
           <div class="fileTitle">
             {{ item.title }}
@@ -79,10 +79,9 @@ export default {
     }
   },
   methods: {
-    openFile(savePath, title, status){
-      console.log(status);
+    openFile(savePath, title, percentage){
       const path=require('path');
-      if(savePath && title && status=='success'){
+      if(savePath && title && percentage==100){
         shell.openPath(path.join(savePath, `${title}.mp4`));
       }
     },
