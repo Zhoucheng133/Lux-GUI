@@ -14,7 +14,7 @@
             {{ item.title }}
           </div>
           <div class="operations">
-            <div class="openFolder">
+            <div class="openFolder" @click="openFolder(item.downloadPath)">
               <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9V41L9 21H39.5V15C39.5 13.8954 38.6046 13 37.5 13H24L19 7H6C4.89543 7 4 7.89543 4 9Z" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M40 41L44 21H8.8125L4 41H40Z" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="delFile">
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 export default {
   props: {
     savePath: String,
@@ -79,6 +79,11 @@ export default {
     }
   },
   methods: {
+    openFolder(path){
+      if(path){
+        shell.openPath(path);
+      }
+    },
     showSizeInfo(size, percentage){
       const modifiedSize = size.replace('MiB', 'MB');
       // 将 percentage 转换为数字，并保留两位小数
