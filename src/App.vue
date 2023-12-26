@@ -20,7 +20,7 @@
       @setNowPage="setNowPage" 
       :nowPage="nowPage" />
     <div class="content">
-      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" :header="header" :ffmpegPath="ffmpegPath"/>
+      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" :header="header" :ffmpegPath="ffmpegPath" @updateList="updateList" :list="list"/>
       <completeListView v-show="nowPage=='completeList'"/>
       <settingsView v-show="nowPage=='settings'" :savePath="savePath" :luxPath="luxPath" @changeSettings="changeSettings" @saveHeader="saveHeader"/>
     </div>
@@ -62,6 +62,17 @@ export default {
     }
   },
   methods: {
+    updateList(arg){
+      const existingItemIndex = this.list.findIndex(item => item.pid === arg.pid);
+      if (existingItemIndex !== -1) {
+        this.list[existingItemIndex].percentage = arg.percentage;
+      } else {
+        this.list.push(arg);
+      }
+      this.$forceUpdate()
+      console.log(this.list[0].percentage);
+      console.log("---Dividing---");
+    },
     saveHeader(header){
       this.header=header;
     },

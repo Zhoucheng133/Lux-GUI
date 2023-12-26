@@ -61,6 +61,7 @@ export default {
     luxPath: String,
     ffmpegPath: String,
     header: String,
+    list: Array,
     
   },
   data() {
@@ -71,7 +72,6 @@ export default {
       headerEnable: true,
 
       downloadPath: "",
-      list: [],
     }
   },
   methods: {
@@ -130,19 +130,8 @@ export default {
         this.downloadPath="";
       }
     },
-    updateList(arg){
-      const existingItemIndex = this.list.findIndex(item => item.pid === arg.pid);
-      if (existingItemIndex !== -1) {
-        this.list[existingItemIndex].percentage = arg.percentage;
-      } else {
-        this.list.push(arg);
-      }
-      this.$forceUpdate()
-      console.log(this.list[0].percentage);
-      console.log("---Dividing---");
-    },
     downloadingHandler(event, arg){
-      this.updateList(arg);
+      this.$emit("updateList", arg);
     }
   },
   created() {
