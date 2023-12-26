@@ -60,26 +60,36 @@ if (isDevelopment) {
 }
 
 // 删除原始文件
-function delOriginFile(savePath, title){
-  const fs = require('fs');
+// function delOriginFiles(savePath, title){
+//   const fs = require('fs');
+//   const path=require("path");
+//   // const audioFilePath = `${savePath}/${title}[1].m4a`;
+//   const audioFilePath = path.join(savePath, `${title}[1].m4a`);
+//   // const videoFilePath = `${savePath}/${title}[0].mp4`;
+//   const videoFilePath = path.join(savePath, `/${title}[0].mp4`)
+//   fs.unlink(audioFilePath, (err) => {
+//     if (err) {
+//       console.error('无法删除文件:', err);
+//     } else {
+//       console.log('文件删除成功！');
+//     }
+//   });
+//   fs.unlink(videoFilePath, (err) => {
+//     if (err) {
+//       console.error('无法删除文件:', err);
+//     } else {
+//       console.log('文件删除成功！');
+//     }
+//   });
+// }
+
+function delOriginFiles(savePath, files) {
+  const fs=require('fs');
   const path=require("path");
-  // const audioFilePath = `${savePath}/${title}[1].m4a`;
-  const audioFilePath = path.join(savePath, `${title}[1].m4a`);
-  // const videoFilePath = `${savePath}/${title}[0].mp4`;
-  const videoFilePath = path.join(savePath, `/${title}[0].mp4`)
-  fs.unlink(audioFilePath, (err) => {
-    if (err) {
-      console.error('无法删除文件:', err);
-    } else {
-      console.log('文件删除成功！');
-    }
-  });
-  fs.unlink(videoFilePath, (err) => {
-    if (err) {
-      console.error('无法删除文件:', err);
-    } else {
-      console.log('文件删除成功！');
-    }
+  files.forEach(file => {
+    const filePath = path.join(savePath, file);
+    fs.unlinkSync(filePath);
+    console.log(`删除文件: ${filePath}`);
   });
 }
 
@@ -88,25 +98,36 @@ function mergeController(savePath, title, ffmpegPath){
   const ffmpeg = require('fluent-ffmpeg');
   ffmpeg.setFfmpegPath(ffmpegPath);
   const path=require("path");
-  // const audioFilePath = `${savePath}/${title}[1].m4a`;
-  // const videoFilePath = `${savePath}/${title}[0].mp4`;
-  // const outputFilePath = `${savePath}/${title}.mp4`;
-  const audioFilePath = path.join(savePath, `${title}[1].m4a`);
-  const videoFilePath = path.join(savePath,`${title}[0].mp4`);
+  const fs=require('fs');
+  const filesToMerge = fs.readdirSync(savePath).filter(file => file.startsWith(title+'['));
+  if (filesToMerge.length < 2) {
+    console.error('没有足够的文件可以合并');
+    return;
+  }
+
+  const inputFilePaths = filesToMerge.map(file => path.join(savePath, file));
   const outputFilePath = path.join(savePath, `${title}.mp4`);
-  ffmpeg()
-  .input(audioFilePath)
-  .input(videoFilePath)
-  .outputOptions('-c', 'copy')
-  .output(outputFilePath)
-  .on('end', () => {
-    console.log('合并完成！');
-    delOriginFile(savePath, title);
-  })
-  .on('error', (err) => {
-    console.error('合并失败:', err);
-  })
-  .run();
+
+  // const audioFilePath = path.join(savePath, `${title}[1].m4a`);
+  // const videoFilePath = path.join(savePath,`${title}[0].mp4`);
+  // const outputFilePath = path.join(savePath, `${title}.mp4`);
+
+  const ffmpegCommand = ffmpeg();
+  inputFilePaths.forEach(inputFile => {
+    ffmpegCommand.input(inputFile);
+  });
+
+  ffmpegCommand
+    .outputOptions('-c', 'copy')
+    .output(outputFilePath)
+    .on('end', () => {
+      console.log('合并完成！');
+      delOriginFiles(savePath, filesToMerge);
+    })
+    .on('error', (err) => {
+      console.error('合并失败:', err);
+    })
+    .run();
 }
 
 // 打开文件
@@ -137,58 +158,58 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, down
   }
   const { spawn } = require('child_process');
 
-  // 获取信息
-  const command = `${luxPath} -j "${link}"`;
-  var title="";
-  const infoProcess=spawn(command, { shell: true });
-  infoProcess.stdout.on('data', (data) => {
-    data = JSON.parse(String(data))
-    title = data[0].title
-    feedBack.title = title.replaceAll("/", " ")
+  // 下载
+  var fullCommand = "";
+  if(header){
+    fullCommand = `${luxPath} -o ${savePath} -O "${feedBack.title}" -c ${header} "${link}"`;
+  }else{
+    fullCommand = `${luxPath} -o ${savePath} -O "${feedBack.title}" "${link}"`;
+  }
+  
+  const childProcess = spawn(fullCommand, { shell: true });
+  feedBack.pid=childProcess.pid;
+
+  childProcess.stdout.on('data', (data) => {
+    const titleMatch = String(data).match(/Title:\s+(.+)/);
+    if (titleMatch && titleMatch[1]) {
+      const titleValue = titleMatch[1].trim();
+      console.log(`Title 的值为：${titleValue}`);
+      feedBack.title=titleValue;
+    } else {
+      console.error('未找到 Title 行或匹配失败。');
+      feedBack.title="未命名的视频";
+    }
   });
 
-  infoProcess.on("close", ()=>{
-    // 下载
-    var fullCommand = "";
-    if(header){
-      fullCommand = `${luxPath} -o ${savePath} -O "${feedBack.title}" -c ${header} "${link}"`;
-    }else{
-      fullCommand = `${luxPath} -o ${savePath} -O "${feedBack.title}" "${link}"`;
+  childProcess.stderr.on('data', (data) => {
+    var downloadInfo="";
+    var bracketIndex = String(data).indexOf("[");
+    if (bracketIndex !== -1) {
+      downloadInfo = String(data).substring(0, bracketIndex);
     }
-    
-    const childProcess = spawn(fullCommand, { shell: true });
-    feedBack.pid=childProcess.pid;
+    feedBack.size=downloadInfo.substring(downloadInfo.indexOf('/')+2, downloadInfo.length)
+    var lastSpaceIndex = String(data).lastIndexOf(" ");
+    var secondLastSpaceIndex = String(data).lastIndexOf(" ", lastSpaceIndex - 1);
+    if (lastSpaceIndex !== -1 && secondLastSpaceIndex !== -1) {
+      var betweenSpaces = String(data).substring(secondLastSpaceIndex + 1, lastSpaceIndex - 1);
+      feedBack.percentage=parseFloat(betweenSpaces);
+      console.log(feedBack.percentage);
+    }
+    event.reply('downloadingHandler', feedBack);
+  });
 
-    childProcess.stderr.on('data', (data) => {
-      var downloadInfo="";
-      var bracketIndex = String(data).indexOf("[");
-      if (bracketIndex !== -1) {
-        downloadInfo = String(data).substring(0, bracketIndex);
-      }
-      feedBack.size=downloadInfo.substring(downloadInfo.indexOf('/')+2, downloadInfo.length)
-      var lastSpaceIndex = String(data).lastIndexOf(" ");
-      var secondLastSpaceIndex = String(data).lastIndexOf(" ", lastSpaceIndex - 1);
-      if (lastSpaceIndex !== -1 && secondLastSpaceIndex !== -1) {
-        var betweenSpaces = String(data).substring(secondLastSpaceIndex + 1, lastSpaceIndex - 1);
-        feedBack.percentage=parseFloat(betweenSpaces);
-        console.log(feedBack.percentage);
-      }
+  childProcess.on('close', (code) => {
+    mergeController(savePath, feedBack.title, ffmpegPath);
+    if(code==0){
+      console.log("finish");
+      feedBack.status="success";
       event.reply('downloadingHandler', feedBack);
-    });
-
-    childProcess.on('close', (code) => {
-      mergeController(savePath, feedBack.title, ffmpegPath);
-      if(code==0){
-        console.log("finish");
-        feedBack.status="success";
-        event.reply('downloadingHandler', feedBack);
-      }else{
-        console.log("err");
-        feedBack.status="err";
-        event.reply('downloadingHandler', feedBack);
-      }
-    });
-  })
+    }else{
+      console.log("err");
+      feedBack.status="err";
+      event.reply('downloadingHandler', feedBack);
+    }
+  });
 });
 
 // 选择FFmpeg路径
