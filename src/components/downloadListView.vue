@@ -51,7 +51,14 @@
         <el-checkbox v-model="m3u8Enable">使用m3u8下载</el-checkbox>
         <el-checkbox v-model="headerEnable">使用默认Header</el-checkbox>
         <div class="cancelButton" @click="cancelDownload">取消</div>
-        <div class="downloadButton" @click="downloadHandler">下载</div>
+        <div :class="loading ? 'downloadButton_disable':'downloadButton'" @click="downloadHandler">
+          <div v-if="loading" class="loadingIcon">
+            <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 24C4 35.0457 12.9543 44 24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div v-else>
+            下载
+          </div>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -76,6 +83,8 @@ export default {
       headerEnable: true,
 
       downloadPath: "",
+
+      loading: false,
     }
   },
   methods: {
@@ -128,6 +137,14 @@ export default {
         this.headerEnable=true;
       }, 500);
     },
+    closeAddDownload(){
+      this.showAdd=false;
+      setTimeout(() => {
+        this.addLink="";
+        this.m3u8Enable=false;
+        this.downloadPath="";
+      }, 200);
+    },
     downloadHandler(){
       if(this.addLink==""){
         this.$message.error({message: "没有输入下载链接", offset: 50, duration: 2000});
@@ -139,13 +156,14 @@ export default {
         }else{
           ipcRenderer.send('luxDownload', this.addLink, this.luxPath, this.savePath, this.ffmpegPath, this.downloadPath);
         }
-        this.showAdd=false;
-        this.addLink="";
-        this.m3u8Enable=false;
-        this.downloadPath="";
+        this.loading=true;
       }
     },
     downloadingHandler(event, arg){
+      if(this.loading){
+        this.loading=false;
+        this.closeAddDownload();
+      }
       this.$emit("updateList", arg);
     }
   },
@@ -166,6 +184,20 @@ export default {
 </style>
 
 <style scoped>
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.loadingIcon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: rotate 1s linear infinite;
+}
 .sizeInfo{
   font-size: 14px;
   text-align: right;
@@ -257,7 +289,18 @@ export default {
   background-color: rgb(0, 218, 207);
   color: white;
 }
-.cancelButton, .downloadButton{
+.downloadButton_disable{
+  background-color: lightgrey;
+  color: white;
+  cursor: not-allowed;
+  border: 1px solid white;
+  height: 20px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cancelButton, .downloadButton, .downloadButton_disable{
   padding-right: 10px;
   padding-left: 10px;
   padding-top: 5px;
