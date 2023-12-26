@@ -89,9 +89,9 @@ export default {
   },
   methods: {
     openFile(savePath, title, percentage){
-      const path=require('path');
       if(savePath && title && percentage==100){
-        shell.openPath(path.join(savePath, `${title}.mp4`));
+        // shell.openPath(path.join(savePath, `${title}.mp4`));
+        ipcRenderer.send('openFile', savePath, title);
       }
     },
     openFolder(path){

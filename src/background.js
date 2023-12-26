@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain, dialog } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, dialog, shell } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -108,6 +108,22 @@ function mergeController(savePath, title, ffmpegPath){
   })
   .run();
 }
+
+// 打开文件
+ipcMain.on("openFile", async (event, savePath, title) => {
+  const path=require('path');
+  const fs=require('fs');
+  var filePath=path.join(savePath, `${title}.mp4`);
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(`${filePath} 不存在`);
+      // 在这里可以处理文件不存在的情况，例如给用户一个提示
+    } else {
+      // 文件存在，可以打开
+      shell.openPath(filePath);
+    }
+  });
+})
 
 // 使用Lux下载
 ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, downloadPath, header) => {
