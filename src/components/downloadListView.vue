@@ -8,7 +8,7 @@
     </div>
     <div class="diviline"></div>
     <div class="content">
-      <div class="downloadItem" v-for="(item, index) in list" :key="index" @dblclick="openFile(item.downloadPath, item.title)">
+      <div class="downloadItem" v-for="(item, index) in list" :key="index" @dblclick="openFile(item.downloadPath, item.title, item.status)">
         <div class="fileTitleBar">
           <div class="fileTitle">
             {{ item.title }}
@@ -79,9 +79,10 @@ export default {
     }
   },
   methods: {
-    openFile(savePath, title){
+    openFile(savePath, title, status){
+      console.log(status);
       const path=require('path');
-      if(savePath && title){
+      if(savePath && title && status=='success'){
         shell.openPath(path.join(savePath, `${title}.mp4`));
       }
     },
@@ -247,14 +248,14 @@ export default {
   background-color: rgb(0, 187, 177);
 }
 .cancelButton:hover{
-  border: 1px solid rgb(0, 220, 210);
-  color: rgb(0, 220, 210);
+  border: 1px solid rgb(0, 218, 207);
+  color: rgb(0, 218, 207);
 }
 .cancelButton:hover, .downloadButton:hover{
   cursor: pointer;
 }
 .downloadButton{
-  background-color: rgb(0, 220, 210);
+  background-color: rgb(0, 218, 207);
   color: white;
 }
 .cancelButton, .downloadButton{
