@@ -20,7 +20,7 @@
       @setNowPage="setNowPage" 
       :nowPage="nowPage" />
     <div class="content">
-      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" :header="header" :ffmpegPath="ffmpegPath" @updateList="updateList" :list="list"/>
+      <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" :header="header" :ffmpegPath="ffmpegPath" @updateList="updateList" :list="list" @delFile="delFile"/>
       <completeListView v-show="nowPage=='completeList'"/>
       <settingsView v-show="nowPage=='settings'" :savePath="savePath" :luxPath="luxPath" @changeSettings="changeSettings" @saveHeader="saveHeader"/>
     </div>
@@ -62,6 +62,13 @@ export default {
     }
   },
   methods: {
+    delFile(arg){
+      this.list=this.list.filter(item => !(item.title === arg.title && item.pid === arg.pid));
+      var savedList=this.list.filter((item)=>{
+        return item.percentage==100;
+      })
+      localStorage.setItem("savedList", JSON.stringify(savedList));
+    },
     updateList(arg){
       const existingItemIndex = this.list.findIndex(item => item.pid === arg.pid);
       if (existingItemIndex !== -1) {

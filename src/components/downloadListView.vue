@@ -17,7 +17,7 @@
             <div class="openFolder" @click="openFolder(item.downloadPath)">
               <svg width="16" height="16" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 9V41L9 21H39.5V15C39.5 13.8954 38.6046 13 37.5 13H24L19 7H6C4.89543 7 4 7.89543 4 9Z" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M40 41L44 21H8.8125L4 41H40Z" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <div class="delFile">
+            <div class="delFile" @click="delFile(item)">
               <svg width="12" height="12" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 8L40 40" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 40L40 8" stroke="#000000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
           </div>
@@ -90,6 +90,9 @@ export default {
     }
   },
   methods: {
+    delFile(item){
+      this.$emit("delFile", item);
+    },
     openFile(savePath, title, percentage){
       if(savePath && title && percentage==100){
         // shell.openPath(path.join(savePath, `${title}.mp4`));
