@@ -146,6 +146,9 @@ export default {
       }, 200);
     },
     downloadHandler(){
+      if(this.loading){
+        return;
+      }
       if(this.addLink==""){
         this.$message.error({message: "没有输入下载链接", offset: 50, duration: 2000});
       }else if(this.downloadPath==""){
