@@ -70,8 +70,15 @@ export default {
         this.list.push(arg);
       }
       this.$forceUpdate()
-      console.log(this.list[0].percentage);
-      console.log("---Dividing---");
+
+      console.log(arg.percentage);
+      if(arg.percentage==100){
+        console.log(this.list);
+        var savedList=this.list.filter((item)=>{
+          return item.percentage==100;
+        })
+        localStorage.setItem("savedList", JSON.stringify(savedList));
+      }
     },
     saveHeader(header){
       this.header=header;
@@ -112,6 +119,9 @@ export default {
     ipcRenderer.send('getSys');
     if(localStorage.getItem("header")!=null && localStorage.getItem("header")!=""){
       this.header=localStorage.getItem("header");
+    }
+    if(localStorage.getItem("savedList")){
+      this.list=JSON.parse(localStorage.getItem("savedList"));
     }
   },
 }
