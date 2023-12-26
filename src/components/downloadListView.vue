@@ -8,7 +8,7 @@
     </div>
     <div class="diviline"></div>
     <div class="content">
-      <div class="downloadItem" v-for="(item, index) in list" :key="index">
+      <div class="downloadItem" v-for="(item, index) in list" :key="index" @dblclick="openFile(item.downloadPath, item.title)">
         <div class="fileTitleBar">
           <div class="fileTitle">
             {{ item.title }}
@@ -79,6 +79,12 @@ export default {
     }
   },
   methods: {
+    openFile(savePath, title){
+      const path=require('path');
+      if(savePath && title){
+        shell.openPath(path.join(savePath, `${title}.mp4`));
+      }
+    },
     openFolder(path){
       if(path){
         shell.openPath(path);
