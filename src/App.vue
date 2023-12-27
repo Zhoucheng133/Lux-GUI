@@ -63,11 +63,27 @@ export default {
   },
   methods: {
     delFile(arg){
-      this.list=this.list.filter(item => !(item.title === arg.title && item.pid === arg.pid));
-      var savedList=this.list.filter((item)=>{
-        return item.percentage==100;
-      })
-      localStorage.setItem("savedList", JSON.stringify(savedList));
+      if(arg.percentage==100){
+        this.list=this.list.filter(item => !(item.title === arg.title && item.pid === arg.pid));
+        var savedList=this.list.filter((item)=>{
+          return item.percentage==100;
+        })
+        localStorage.setItem("savedList", JSON.stringify(savedList));
+      }else{
+        this.$confirm('下载还没有完成，是否要停止下载？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          ipcRenderer.send("stopDownload", arg.pid);
+          setTimeout(() => {
+            this.list=this.list.filter(item => !(item.title === arg.title && item.pid === arg.pid));
+          }, 100);
+        }).catch(() => {
+
+        })
+      }
+      
     },
     updateList(arg){
       const existingItemIndex = this.list.findIndex(item => item.pid === arg.pid);

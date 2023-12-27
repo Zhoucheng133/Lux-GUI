@@ -85,10 +85,6 @@ function mergeController(savePath, title, ffmpegPath){
   const inputFilePaths = filesToMerge.map(file => path.join(savePath, file));
   const outputFilePath = path.join(savePath, `${title}.mp4`);
 
-  // const audioFilePath = path.join(savePath, `${title}[1].m4a`);
-  // const videoFilePath = path.join(savePath,`${title}[0].mp4`);
-  // const outputFilePath = path.join(savePath, `${title}.mp4`);
-
   const ffmpegCommand = ffmpeg();
   inputFilePaths.forEach(inputFile => {
     ffmpegCommand.input(inputFile);
@@ -106,6 +102,11 @@ function mergeController(savePath, title, ffmpegPath){
     })
     .run();
 }
+
+// 停止下载
+ipcMain.on("stopDownload", async (event, pid) => {
+  process.kill(pid, 'SIGKILL');
+})
 
 // 打开文件
 ipcMain.on("openFile", async (event, savePath, title) => {
