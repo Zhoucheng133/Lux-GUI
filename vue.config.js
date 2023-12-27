@@ -6,6 +6,7 @@ module.exports = defineConfig({
   pluginOptions: {
     electronBuilder: {
       nodeIntegration: true,
+      customFileProtocol: "./",
       builderOptions: {
         artifactName: '${productName}-${version}-${os}-${arch}.${ext}',
         mac: {
