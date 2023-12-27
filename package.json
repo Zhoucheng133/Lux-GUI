@@ -1,6 +1,7 @@
 {
   "name": "lux_gui",
   "version": "0.1.0",
+  "productName": "Lux GUI",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
