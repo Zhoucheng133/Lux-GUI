@@ -76,14 +76,18 @@ export default {
           type: 'warning'
         }).then(() => {
           ipcRenderer.send("stopDownload", arg.pid);
-          setTimeout(() => {
-            this.list=this.list.filter(item => !(item.title === arg.title && item.pid === arg.pid));
-          }, 100);
         }).catch(() => {
 
         })
       }
-      
+    },
+    getStop(event, pid){
+      console.log(this.list);
+      console.log(pid);
+      this.list=this.list.filter(item => !(item.pid == pid));
+      // setTimeout(() => {
+      //   this.list=this.list.filter(item => !(item.pid == pid));
+      // }, 100);
     },
     updateList(arg){
       const existingItemIndex = this.list.findIndex(item => item.pid === arg.pid);
@@ -138,7 +142,9 @@ export default {
   },
   created() {
     ipcRenderer.removeAllListeners('sysFeedback');
+    ipcRenderer.removeAllListeners('getStop');
     ipcRenderer.on('sysFeedback', this.sysFeedback);
+    ipcRenderer.on('getStop', this.getStop);
     ipcRenderer.send('getSys');
     if(localStorage.getItem("header")!=null && localStorage.getItem("header")!=""){
       this.header=localStorage.getItem("header");

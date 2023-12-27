@@ -103,9 +103,13 @@ function mergeController(savePath, title, ffmpegPath){
     .run();
 }
 
+var stopedList=[];
+
 // 停止下载
 ipcMain.on("stopDownload", async (event, pid) => {
   process.kill(pid, 'SIGKILL');
+  stopedList.push(pid);
+  event.reply("getStop", pid);
 })
 
 // 打开文件
@@ -173,7 +177,9 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, down
       feedBack.percentage=parseFloat(betweenSpaces);
       console.log(feedBack.percentage);
     }
-    event.reply('downloadingHandler', feedBack);
+    if(!stopedList.includes(feedBack.pid)){
+      event.reply('downloadingHandler', feedBack);
+    }
   });
 
   childProcess.on('close', (code) => {
@@ -181,12 +187,17 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, down
     if(code==0){
       console.log("finish");
       feedBack.status="success";
-      event.reply('downloadingHandler', feedBack);
+      if(!stopedList.includes(feedBack.pid)){
+        event.reply('downloadingHandler', feedBack);
+      }
     }else{
       console.log("err");
       feedBack.status="err";
-      event.reply('downloadingHandler', feedBack);
+      if(!stopedList.includes(feedBack.pid)){
+        event.reply('downloadingHandler', feedBack);
+      }
     }
+    stopedList=stopedList.filter(item => item !== feedBack.pid);
   });
 });
 
