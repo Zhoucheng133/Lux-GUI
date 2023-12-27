@@ -60,29 +60,6 @@ if (isDevelopment) {
 }
 
 // 删除原始文件
-// function delOriginFiles(savePath, title){
-//   const fs = require('fs');
-//   const path=require("path");
-//   // const audioFilePath = `${savePath}/${title}[1].m4a`;
-//   const audioFilePath = path.join(savePath, `${title}[1].m4a`);
-//   // const videoFilePath = `${savePath}/${title}[0].mp4`;
-//   const videoFilePath = path.join(savePath, `/${title}[0].mp4`)
-//   fs.unlink(audioFilePath, (err) => {
-//     if (err) {
-//       console.error('无法删除文件:', err);
-//     } else {
-//       console.log('文件删除成功！');
-//     }
-//   });
-//   fs.unlink(videoFilePath, (err) => {
-//     if (err) {
-//       console.error('无法删除文件:', err);
-//     } else {
-//       console.log('文件删除成功！');
-//     }
-//   });
-// }
-
 function delOriginFiles(savePath, files) {
   const fs=require('fs');
   const path=require("path");
