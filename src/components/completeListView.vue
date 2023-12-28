@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="progress">
-            <el-progress :percentage="Math.round(item.percentage)"></el-progress>
+            <el-progress :percentage="Math.round(item.percentage)" :color="progressColor"></el-progress>
             <div class="sizeInfo">{{ showSizeInfo(item.size, item.percentage) }}</div>
           </div>
         </div>
@@ -42,6 +42,13 @@ export default {
     }
   },
   methods: {
+    progressColor(percentage){
+      if(percentage==100){
+        return '#32CD32'
+      }else{
+        return '#00dacf';
+      }
+    },
     delFile(item){
       this.$emit("delFile", item);
     },
