@@ -21,7 +21,7 @@
       :nowPage="nowPage" />
     <div class="content">
       <downloadListView v-show="nowPage=='downloadList'" :savePath="savePath" :luxPath="luxPath" :header="header" :ffmpegPath="ffmpegPath" @updateList="updateList" :list="list" @delFile="delFile"/>
-      <completeListView v-show="nowPage=='completeList'"/>
+      <completeListView v-show="nowPage=='completeList'" :list="list" @delFile="delFile" />
       <settingsView v-show="nowPage=='settings'" :savePath="savePath" :luxPath="luxPath" @changeSettings="changeSettings" @saveHeader="saveHeader"/>
     </div>
   </div>
