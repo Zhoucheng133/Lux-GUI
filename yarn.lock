@@ -5006,9 +5006,9 @@ flatted@^3.2.9:
   resolved "https://registry.npmmirror.com/flatted/-/flatted-3.2.9.tgz#7eb4c67ca1ba34232ca9d2d93e9886e611ad7daf"
   integrity sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==
 
-"fluent-ffmpeg@git+https://gitee.com/suniv/node-fluent-ffmpeg.git":
+"fluent-ffmpeg@https://gitee.com/suniv/node-fluent-ffmpeg.git":
   version "2.1.2"
-  resolved "git+https://gitee.com/suniv/node-fluent-ffmpeg.git#12667091eeea09b0d6a55b87eb886aa131178608"
+  resolved "https://gitee.com/suniv/node-fluent-ffmpeg.git#12667091eeea09b0d6a55b87eb886aa131178608"
   dependencies:
     async ">=0.2.9"
     which "^1.1.1"

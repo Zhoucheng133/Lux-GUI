@@ -78,6 +78,7 @@ function mergeController(savePath, title, ffmpegPath){
   const fs=require('fs');
   const filesToMerge = fs.readdirSync(savePath).filter(file => file.startsWith(title+'['));
   if (filesToMerge.length < 2) {
+    console.log(title);
     console.error('没有足够的文件可以合并');
     return;
   }
@@ -156,10 +157,12 @@ ipcMain.on("luxDownload", async (event, link, luxPath, savePath,ffmpegPath, down
     if (titleMatch && titleMatch[1]) {
       const titleValue = titleMatch[1].trim();
       console.log(`Title 的值为：${titleValue}`);
-      feedBack.title=titleValue;
+      feedBack.title=titleValue.replaceAll("\/", " ");
     } else {
       console.error('未找到 Title 行或匹配失败。');
-      feedBack.title="未命名的视频";
+      if(feedBack.percentage!=100){
+        feedBack.title="未命名的视频";
+      }
     }
   });
 
