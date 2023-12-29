@@ -50,6 +50,7 @@
           <img src="@/icon.png" alt="" width="100px">
           <div class="appName">Lux GUI</div>
           <div class="appVer">{{ appVer }}</div>
+          <div class="license" @click="aboutLicense">关于版权</div>
         </div>
       </div>
     </div>
@@ -67,9 +68,18 @@ export default {
       headerInput: "",
 
       appVer: "",
+
+      license: `
+        Lux GUI: MIT
+      `,
     }
   },
   methods: {
+    aboutLicense(){
+      this.$alert(this.license, '关于版权', {
+        confirmButtonText: '确定',
+      });
+    },
     saveHeader(){
       localStorage.setItem("header", this.headerInput);
       this.$message.success({"message": "已保存默认Header", offset: 50, duration: 2000});
@@ -155,9 +165,21 @@ export default {
 .el-input__inner{
   height: 30px !important;
 }
+.el-message-box__title{
+  font-size: 16px !important;
+}
 </style>
 
 <style scoped>
+.license:hover{
+  color: rgb(0, 218, 207);
+  cursor: pointer;
+}
+.license{
+  font-size: 13px;
+  margin-top: 10px;
+  transition: color linear .2s;
+}
 .appVer{
   color: grey;
   font-size: 14px;
